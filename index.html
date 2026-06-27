@@ -21,6 +21,18 @@
 
 .viewBtn{width:100%;margin-top:12px;padding:11px;border:0;border-radius:12px;background:#2563eb;color:#fff;font-weight:900;font-size:13px}.viewBtn:active{transform:scale(.98)}
 .clickableStat{cursor:pointer;transition:.15s ease}.clickableStat:active{transform:scale(.97)}.clickableStat:before{content:"Tap to view";position:absolute;right:10px;top:10px;font-size:9px;font-weight:900;color:#94a3b8;text-transform:uppercase;letter-spacing:.3px}
+
+/* Keep Motorpool Warehouse search fixed while scrolling */
+#consumables .controls{
+  position:sticky;
+  top:112px;
+  z-index:9;
+  background:var(--bg);
+  padding:12px 14px 10px;
+  border-bottom:1px solid var(--line);
+}
+#consumables .search{box-shadow:0 8px 20px rgba(15,23,42,.06)}
+
 </style>
 </head>
 <body>
@@ -100,7 +112,7 @@
 </section>
 </div>
 
-<nav class="bottom"><button class="tab active" data-page="dashboard">Home</button><button class="tab" data-page="consumables">Motorpool Warehouse</button></nav>
+<nav class="bottom"><button class="tab active" data-page="dashboard">Home</button><button class="tab" data-page="consumables">Motorpool</button></nav>
 <div class="photoModal" id="photoModal"><img id="photoImg" alt="Equipment photo"></div>
 
 <script type="module">
@@ -161,7 +173,7 @@ function consCard(r,summary=false){if(summary){if(r.sourceType==="warehousePart"
 function filteredParts(){const q=partsSearch.value.toLowerCase(),eq=partsEquip.value,loc=partsLocation.value,st=partsStatus.value;let arr=parts.filter(r=>{const m=meta(r.equipNo);const status=normPart(r.status);const location=r.equipmentLocation||m.location||"";const hay=[r.equipNo,r.partName,r.partNumber,r.prNo,r.supplier,r.transferTo,r.equipmentName,m.equipment,location,status].join(" ").toLowerCase();return (!q||hay.includes(q))&&(!eq||r.equipNo===eq)&&(!loc||location===loc)&&(!st||status===st)});if(partsSort.value==="part")arr.sort((a,b)=>String(a.partName||"").localeCompare(b.partName||""));else if(partsSort.value==="equip")arr.sort((a,b)=>String(a.equipNo||"").localeCompare(b.equipNo||""));else arr.sort((a,b)=>dateVal(b)-dateVal(a));return arr}
 function filteredEquip(){const q=equipSearch.value.toLowerCase(),n=equipName.value,l=equipLocation.value,s=equipStatus.value;let arr=equipment.filter(r=>{const status=normEquip(r.status);const hay=[r.equipment,r.equipNo,r.location,r.transferTo,r.company,r.model,r.serialNo,status].join(" ").toLowerCase();return (!q||hay.includes(q))&&(!n||r.equipment===n)&&(!l||r.location===l)&&(!s||status===s)});if(equipSort.value==="name")arr.sort((a,b)=>String(a.equipment||"").localeCompare(b.equipment||""));else if(equipSort.value==="location")arr.sort((a,b)=>String(a.location||"").localeCompare(b.location||""));else arr.sort((a,b)=>String(a.equipNo||"").localeCompare(b.equipNo||""));return arr}
 function filteredCons(){return motorpoolRows()}
-function render(){fillSelect("partsEquip",parts.map(r=>r.equipNo),"All equipment");fillSelect("partsLocation",[...parts.map(r=>r.equipmentLocation),...equipment.map(e=>e.location)],"All locations");fillSelect("equipName",equipment.map(e=>e.equipment),"All equipment");fillSelect("equipLocation",equipment.map(e=>e.location),"All locations");sOperational.textContent=equipment.filter(e=>normEquip(e.status)==="Operational").length;sRefurbishing.textContent=equipment.filter(e=>normEquip(e.status)==="Ongoing Rehabilitation").length;sRepair.textContent=equipment.filter(e=>normEquip(e.status)==="Under Repair/Maintenance").length;sInactive.textContent=equipment.filter(e=>normEquip(e.status)==="Inactive").length;const fp=filteredParts();partsTotal.textContent=parts.length;partsCount.textContent=fp.length;partsList.innerHTML=fp.length?fp.map(partCard).join(""):empty("No matching parts");const fe=filteredEquip();equipTotal.textContent=equipment.length;equipCount.textContent=fe.length;equipList.innerHTML=fe.length?fe.map(equipCard).join(""):empty("No matching equipment");const rows=filteredCons();consCount.textContent=rows.length;consList.innerHTML=rows.length?rows.map(r=>consCard(r,consView.value==="summary")).join(""):empty("No Consumable and Parts records")}
+function render(){fillSelect("partsEquip",parts.map(r=>r.equipNo),"All equipment");fillSelect("partsLocation",[...parts.map(r=>r.equipmentLocation),...equipment.map(e=>e.location)],"All locations");fillSelect("equipName",equipment.map(e=>e.equipment),"All equipment");fillSelect("equipLocation",equipment.map(e=>e.location),"All locations");sOperational.textContent=equipment.filter(e=>normEquip(e.status)==="Operational").length;sRefurbishing.textContent=equipment.filter(e=>normEquip(e.status)==="Ongoing Rehabilitation").length;sRepair.textContent=equipment.filter(e=>normEquip(e.status)==="Under Repair/Maintenance").length;sInactive.textContent=equipment.filter(e=>normEquip(e.status)==="Inactive").length;const fp=filteredParts();partsTotal.textContent=parts.length;partsCount.textContent=fp.length;partsList.innerHTML=fp.length?fp.map(partCard).join(""):empty("No matching parts");const fe=filteredEquip();equipTotal.textContent=equipment.length;equipCount.textContent=fe.length;equipList.innerHTML=fe.length?fe.map(equipCard).join(""):empty("No matching equipment");const rows=filteredCons();consCount.textContent=rows.length;consList.innerHTML=rows.length?rows.map(r=>consCard(r,consView.value==="summary")).join(""):empty("No consumable records")}
 function empty(t){return `<div class="empty"><h3>${t}</h3><p>Try changing the search or filters.</p></div>`}
 ["partsSearch","partsEquip","partsLocation","partsStatus","partsSort","equipSearch","equipName","equipLocation","equipStatus","equipSort","consSearch","consType","consFrom","consTo","consView"].forEach(id=>$(id).addEventListener("input",render));
 document.querySelectorAll(".clear").forEach(b=>b.onclick=()=>{if(b.dataset.clear==="parts"){partsSearch.value=partsEquip.value=partsLocation.value=partsStatus.value="";partsSort.value="recent"}if(b.dataset.clear==="equipment"){equipSearch.value=equipName.value=equipLocation.value=equipStatus.value="";equipSort.value="equipNo"}if(b.dataset.clear==="consumables"){consSearch.value=consType.value=consFrom.value=consTo.value="";consView.value="summary"}render()});
