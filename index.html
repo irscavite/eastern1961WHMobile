@@ -120,7 +120,7 @@ const firebaseConfig={
   measurementId:"G-FWKGTVK2C5"
 };
 const app=initializeApp(firebaseConfig), db=getDatabase(app);
-let parts=[],equipment=[],consumables=[];
+let parts=[],warehouseParts=[],equipment=[],consumables=[];
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
 const clean=v=>String(v??"").trim();
@@ -154,6 +154,19 @@ function partCard(r){
   const m=equipMeta(r.equipNo),eqName=clean(r.equipmentName)||clean(m.equipment)||"-",loc=clean(r.equipmentLocation)||clean(m.location)||"-",st=statusText(r.status);
   return `<article class="card"><div class="row"><span class="pill">${esc(r.equipNo||"No Equip No.")}</span>${badge(st)}</div><div class="title">${esc(r.partName||"Untitled Part")}</div><div class="sub">${esc(eqName)} · ${esc(loc)}</div><div class="meta"><div><span>Part Number</span>${esc(r.partNumber||"-")}</div><div><span>PR Number</span>${esc(r.prNo||"-")}</div><div><span>PR Date</span>${esc(r.prDate||"-")}</div><div><span>Supplier</span>${esc(r.supplier||"-")}</div><div><span>Quantity</span>${esc(r.qty||"-")} ${esc(r.unit||"")}</div><div><span>Received Date</span>${esc(r.receivedDate||"-")}</div><div><span>Installed Date</span>${esc(r.installedDate||"-")}</div><div><span>Updated</span>${esc(r.updatedAt||r.createdAt||"-")}</div></div><div class="remarks"><b>Remarks</b>${esc(r.remarks||"No remarks")}</div></article>`
 }
+function warehousePartCard(r){
+  return `<article class="card">
+    <div class="title" style="margin-top:0">${esc(r.itemName||"")}</div>
+    <div class="meta">
+      <div><span>Material / Item Name</span>${esc(r.itemName||"")}</div>
+      <div><span>Part Number</span>${esc(r.partNumber||"")}</div>
+      <div><span>Quantity</span>${esc(r.quantity??"")}</div>
+      <div><span>Unit</span>${esc(r.unit||"")}</div>
+      <div><span>Equipment</span>${esc(r.equipment||"")}</div>
+      <div><span>Remarks</span>${esc(r.remarks||"")}</div>
+    </div>
+  </article>`
+}
 function equipmentCard(r){
   const st=equipStatusText(r.status),sc=equipStatusClass(st),pendingCount=parts.filter(p=>lower(p.equipNo)===lower(r.equipNo)&&isPending(p)).length;
   const photo=clean(r.picture)?`<img class="equipPhoto" src="${esc(r.picture)}" alt="${esc(r.equipment||r.equipNo||"Equipment")}">`:`<div class="equipPhotoPlaceholder">▧</div>`;
@@ -168,26 +181,29 @@ function pendingEquipmentSummary(r){
 }
 
 function buildConsumableSummary(){
-  const groups=new Map();
-  for(const r of consumables){const item=clean(r.itemName),unit=clean(r.unit);if(!item)continue;const key=lower(item)+"|"+lower(unit);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r)}
-  const out=[];
-  for(const records of groups.values()){
-    records.sort((a,b)=>dateVal(a)-dateVal(b));let balance=0,totalIn=0,totalOut=0;
-    for(const r of records){const q=Number(r.qty)||0;if(r.isInventoryOverride===true){balance=q}else if(lower(r.transactionType)==="withdrawal"){balance-=q;totalOut+=q}else{balance+=q;totalIn+=q}}
-    const latest=records[records.length-1]||{};
-    out.push({itemName:latest.itemName||records[0].itemName,unit:latest.unit||records[0].unit,category:latest.category||records[0].category,partNumber:latest.partNumber||"",balance,totalIn,totalOut,referenceNo:latest.referenceNo||"",requestedBy:latest.requestedBy||"",remarks:latest.remarks||"",latestDate:latest.date||latest.updatedAt||latest.createdAt||"",records:records.length});
-  }
-  return out.sort((a,b)=>clean(a.itemName).localeCompare(clean(b.itemName)));
+  return consumables.slice().sort((a,b)=>clean(a.itemName).localeCompare(clean(b.itemName)));
 }
-function consumableCard(r){return `<article class="card"><div class="row"><div><div class="title" style="margin-top:0">${esc(r.itemName)}</div><div class="sub">${esc(r.category||"No category")} · ${esc(r.unit||"No unit")}</div></div><span class="balance">Balance: ${esc(r.balance)} ${esc(r.unit||"")}</span></div><div class="meta"><div><span>Part Number</span>${esc(r.partNumber||"-")}</div><div><span>Last Reference</span>${esc(r.referenceNo||"-")}</div><div><span>Total IN Logged</span>${esc(r.totalIn)}</div><div><span>Total OUT Logged</span>${esc(r.totalOut)}</div><div><span>Latest Date</span>${esc(r.latestDate||"-")}</div><div><span>History Records</span>${esc(r.records)}</div><div><span>Requested By</span>${esc(r.requestedBy||"-")}</div><div><span>Source</span>Motorpool Consumables</div></div><div class="remarks"><b>Latest Remarks</b>${esc(r.remarks||"No remarks")}</div></article>`}
+function consumableCard(r){
+  return `<article class="card">
+    <div class="title" style="margin-top:0">${esc(r.itemName||"")}</div>
+    <div class="meta">
+      <div><span>Item Name</span>${esc(r.itemName||"")}</div>
+      <div><span>Part Number</span>${esc(r.partNumber||"")}</div>
+      <div><span>Quantity</span>${esc(r.quantity??"")}</div>
+      <div><span>Unit</span>${esc(r.unit||"")}</div>
+      <div><span>Equipment</span>${esc(r.equipment||"")}</div>
+      <div><span>Remarks</span>${esc(r.remarks||"")}</div>
+    </div>
+  </article>`
+}
 
 function fillFilters(){
-  const ps=$("partsStatus"),pe=$("partsEquip"),curS=ps.value,curE=pe.value;
-  const sts=[...new Set(parts.map(r=>statusText(r.status)).filter(Boolean))].sort();
-  const eqs=[...new Set([...equipment.map(r=>clean(r.equipNo)),...parts.map(r=>clean(r.equipNo))].filter(Boolean))].sort();
-  ps.innerHTML='<option value="">All Status</option>'+sts.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("");
+  const ps=$("partsStatus"),pe=$("partsEquip"),curE=pe.value;
+  const eqs=[...new Set(warehouseParts.map(r=>clean(r.equipment)).filter(Boolean))].sort();
+  ps.innerHTML='<option value="">All Status</option>';
+  ps.style.display="none";
   pe.innerHTML='<option value="">All Equipment</option>'+eqs.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("");
-  if(sts.includes(curS))ps.value=curS;if(eqs.includes(curE))pe.value=curE;
+  if(eqs.includes(curE))pe.value=curE;
 }
 function render(){
   const consSummary=buildConsumableSummary();
@@ -207,11 +223,11 @@ function render(){
   $("pendingEquipSummary").innerHTML=selectedEq?pendingEquipmentSummary(selectedEq):"";
   $("pendingEquipList").innerHTML=selectedPendingEquip?(pendingForEq.length?pendingForEq.map(partCard).join(""):empty("No Pending Parts","There are no pending parts for this equipment.")):empty("Select Equipment","Tap View Pending Parts from an equipment card.");
 
-  fillFilters();const q=lower($("partsSearch").value),st=$("partsStatus").value,eq=$("partsEquip").value;
-  const allp=parts.filter(r=>{const m=equipMeta(r.equipNo),hay=[r.equipNo,r.equipmentName,m.equipment,r.partName,r.partNumber,r.prNo,r.prDate,r.supplier,r.qty,r.unit,r.remarks,r.receivedDate,r.installedDate,statusText(r.status)].join(" ").toLowerCase();return (!q||hay.includes(q))&&(!st||statusText(r.status)===st)&&(!eq||clean(r.equipNo)===eq)}).sort((a,b)=>dateVal(b)-dateVal(a));
-  $("partsCount").textContent=allp.length;$("partsList").innerHTML=allp.length?allp.map(partCard).join(""):empty("No equipment parts found");
+  fillFilters();const q=lower($("partsSearch").value),eq=$("partsEquip").value;
+  const allp=warehouseParts.filter(r=>{if(!clean(r.itemName))return false;const hay=[r.itemName,r.partNumber,r.quantity,r.unit,r.equipment,r.remarks].join(" ").toLowerCase();return (!q||hay.includes(q))&&(!eq||clean(r.equipment)===eq)}).sort((a,b)=>clean(a.itemName).localeCompare(clean(b.itemName)));
+  $("partsCount").textContent=allp.length;$("partsList").innerHTML=allp.length?allp.map(warehousePartCard).join(""):empty("No equipment parts found");
 
-  const cq=lower($("consSearch").value);const cf=consSummary.filter(r=>!cq||[r.itemName,r.category,r.unit,r.partNumber,r.referenceNo,r.requestedBy,r.remarks].join(" ").toLowerCase().includes(cq));
+  const cq=lower($("consSearch").value);const cf=consSummary.filter(r=>clean(r.itemName)&&(!cq||[r.itemName,r.partNumber,r.quantity,r.unit,r.equipment,r.remarks].join(" ").toLowerCase().includes(cq)));
   $("consCount").textContent=cf.length;$("consList").innerHTML=cf.length?cf.map(consumableCard).join(""):empty("No consumables found");
 }
 
@@ -229,8 +245,23 @@ $("partsTab").addEventListener("click",()=>{$("partsTab").classList.add("active"
 $("consTab").addEventListener("click",()=>{$("consTab").classList.add("active");$("partsTab").classList.remove("active");$("consPanel").style.display="block";$("partsPanel").style.display="none"});
 
 onValue(ref(db,"heavyEquipmentRecords"),s=>{parts=Object.entries(s.val()||{}).map(([id,v])=>({id,...v}));setConn(true);render()},()=>setConn(false));
+function normalizeWarehouseRow(id,v){
+  v=v&&typeof v==="object"?v:{};
+  const normKey=k=>String(k||"").toLowerCase().replace(/[^a-z0-9]/g,"");
+  const map={}; Object.entries(v).forEach(([k,val])=>{map[normKey(k)]=val});
+  const pick=(...keys)=>{for(const k of keys){const val=map[normKey(k)];if(val!==undefined&&val!==null)return val}return ""};
+  return {id,...v,
+    itemName:pick("itemName","item name","material","materials","partName","part name","name"),
+    partNumber:pick("partNumber","part number","partNo","part no","part no."),
+    quantity:pick("quantity","qty"),
+    unit:pick("unit","units"),
+    equipment:pick("equipment","equipNo","equipment no","equipmentNo"),
+    remarks:pick("remarks","remark")
+  };
+}
+onValue(ref(db,"equipmentPartsWarehouse"),s=>{warehouseParts=Object.entries(s.val()||{}).map(([id,v])=>normalizeWarehouseRow(id,v));setConn(true);render()},()=>setConn(false));
 onValue(ref(db,"equipmentMasterRecords"),s=>{equipment=Object.entries(s.val()||{}).map(([id,v])=>({id,...v}));setConn(true);render()},()=>setConn(false));
-onValue(ref(db,"motorpoolConsumables"),s=>{consumables=Object.entries(s.val()||{}).map(([id,v])=>({id,...v}));setConn(true);render()},()=>setConn(false));
+onValue(ref(db,"consumables"),s=>{consumables=Object.entries(s.val()||{}).map(([id,v])=>normalizeWarehouseRow(id,v));setConn(true);render()},()=>setConn(false));
 render();
 </script>
 </body>
