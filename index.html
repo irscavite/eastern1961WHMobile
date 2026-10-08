@@ -28,10 +28,310 @@ button,input,select{font:inherit}button{cursor:pointer}
 .equipBadge{display:inline-flex;border-radius:999px;padding:6px 9px;font-size:9.5px;font-weight:900;line-height:1.15;text-align:center}.equipBadge.es-operational{background:#dcfce7;color:#166534}.equipBadge.es-emergency{background:#fee2e2;color:#991b1b}.equipBadge.es-rehab{background:#fef3c7;color:#92400e}.equipBadge.es-repair{background:#fee2e2;color:#991b1b}.equipBadge.es-inactive{background:#e2e8f0;color:#334155}.equipBadge.es-other{background:#f1f5f9;color:#475569}
 .equipTop{display:flex;gap:11px;align-items:flex-start;margin-top:10px}.equipPhoto{width:78px;height:72px;border-radius:14px;object-fit:cover;border:1px solid #dbe2ea;background:#f8fafc;flex:none}.equipPhotoPlaceholder{width:78px;height:72px;border-radius:14px;border:1px dashed #cbd5e1;background:#f8fafc;display:grid;place-items:center;color:#94a3b8;font-size:24px;flex:none}.equipInfo{min-width:0;flex:1}.equipInfo .title{margin:0 0 3px}.pendingBtn{width:100%;margin-top:12px;border:0;border-radius:13px;padding:11px 12px;background:#0f172a;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:7px}.pendingBtn span{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#f59e0b;color:#111827;font-size:9px}.pendingBtn:active{transform:scale(.99)}
 .backBtn{width:100%;margin-bottom:12px;border:1px solid #cbd5e1;border-radius:13px;padding:10px 12px;background:#fff;color:#0f172a;font-size:11px;font-weight:900}.pendingEquipSummary{margin-bottom:12px}.pendingEquipSummary .card{box-shadow:none}.photoModal{position:fixed;inset:0;z-index:90;background:rgba(2,6,23,.92);display:none;align-items:center;justify-content:center;padding:18px}.photoModal.open{display:flex}.photoModal img{max-width:100%;max-height:88vh;border-radius:16px;background:#fff}.photoModal button{position:absolute;right:16px;top:16px;width:38px;height:38px;border:0;border-radius:999px;background:#fff;color:#0f172a;font-size:20px;font-weight:900}
+
+/* MTP Warehouse ALL CAPS display */
+#warehouse, #warehouse input, #warehouse select, #warehouse button { text-transform: uppercase; }
+#warehouse input::placeholder { text-transform: uppercase; }
+
+/* MTP Warehouse readability upgrade */
+.warehouseHead{background:linear-gradient(135deg,#0f172a,#1e40af);color:#fff;border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.warehouseHead h2{margin:0;font-size:18px;line-height:1.2}.warehouseHead p{margin:5px 0 0;color:#cbd5e1;font-size:11px;line-height:1.45}
+#warehouse .seg{position:sticky;top:72px;z-index:12;background:#dbe4f0;border:1px solid #cbd5e1;box-shadow:0 8px 18px rgba(15,23,42,.06)}
+#warehouse .seg button{padding:11px 8px;font-size:12px}#warehouse .seg button.active{color:#1d4ed8}
+#warehouse .controls{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:0 5px 16px rgba(15,23,42,.05)}
+.warehouseCard{padding:0;overflow:hidden;border-radius:20px;border:1px solid #dbe3ee;box-shadow:0 8px 24px rgba(15,23,42,.08);position:relative}
+.warehouseCard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:#2563eb}
+.warehouseCard.equipPartCard::before{background:linear-gradient(180deg,#2563eb,#7c3aed)}
+.warehouseCard.consumableCard::before{background:linear-gradient(180deg,#059669,#14b8a6)}
+.warehouseCardTop{display:flex;align-items:flex-start;gap:12px;padding:15px 14px 13px 18px;border-bottom:1px solid #e2e8f0}
+.equipPartCard .warehouseCardTop{background:linear-gradient(135deg,#eff6ff 0%,#f5f3ff 58%,#ffffff 100%)}
+.consumableCard .warehouseCardTop{background:linear-gradient(135deg,#ecfdf5 0%,#f0fdfa 58%,#ffffff 100%)}
+.warehouseCardMain{min-width:0;flex:1}.warehouseType{display:inline-flex;align-items:center;border-radius:999px;padding:4px 7px;font-size:8.5px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px}
+.equipPartCard .warehouseType{background:#dbeafe;color:#1d4ed8}.consumableCard .warehouseType{background:#d1fae5;color:#047857}
+.warehouseItemName{font-size:15.5px;font-weight:900;line-height:1.25;color:#0f172a;overflow-wrap:anywhere}
+.stockBox{min-width:66px;max-width:90px;padding:10px 8px;border-radius:15px;color:#fff;text-align:center;flex:none;box-shadow:0 6px 14px rgba(15,23,42,.14)}
+.equipPartCard .stockBox{background:linear-gradient(145deg,#2563eb,#6d28d9)}.consumableCard .stockBox{background:linear-gradient(145deg,#059669,#0f766e)}
+.stockBox strong{display:block;font-size:20px;line-height:1.05;overflow-wrap:anywhere}.stockBox span{display:block;margin-top:4px;font-size:8px;font-weight:900;letter-spacing:.35px;text-transform:uppercase;color:#e2e8f0}
+.warehouseDetails{padding:12px 14px 14px 18px}.warehouseDetailGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.warehouseDetail{min-width:0;border-radius:13px;padding:10px 11px;font-size:11px;font-weight:900;color:#1e293b;overflow-wrap:anywhere}
+.equipPartCard .warehouseDetail{background:#f8faff;border:1px solid #dbeafe}.consumableCard .warehouseDetail{background:#f3fffb;border:1px solid #ccfbf1}
+.warehouseDetail span{display:block;margin-bottom:4px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.4px}
+.equipPartCard .warehouseDetail span{color:#4f46e5}.consumableCard .warehouseDetail span{color:#0f766e}
+.warehouseRemarks{margin-top:9px;padding:10px 11px;border-radius:13px;font-size:10.5px;line-height:1.45;overflow-wrap:anywhere}
+.equipPartCard .warehouseRemarks{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12}.consumableCard .warehouseRemarks{background:#fefce8;border:1px solid #fde68a;color:#713f12}
+.warehouseRemarks span{display:block;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}.equipPartCard .warehouseRemarks span{color:#c2410c}.consumableCard .warehouseRemarks span{color:#a16207}
+.warehouseRemarks.emptyRemark{background:#f8fafc!important;border-color:#e2e8f0!important;color:#94a3b8!important}.warehouseRemarks.emptyRemark span{color:#94a3b8!important}
+@media(max-width:390px){.warehouseDetailGrid{grid-template-columns:1fr}.stockBox{min-width:58px}.warehouseItemName{font-size:14px}}
+
 @media(min-width:520px){:root{--rail:138px}.navBtn{min-height:62px;flex-direction:row;justify-content:flex-start;text-align:left;padding:10px 12px;font-size:10px}.navBtn .ico{font-size:18px}.brand{place-items:start;padding-left:10px}.wrap{max-width:680px;margin:auto}.topbar{padding-left:20px}.stats{grid-template-columns:repeat(4,1fr)}}
+
+/* TOOLS & EQUIPMENT VIEW */
+#mtpTools,#mnrTools,#mtpTools input,#mtpTools select,#mnrTools input,#mnrTools select{ text-transform:uppercase; }
+#mtpTools input::placeholder,#mnrTools input::placeholder{ text-transform:uppercase; }
+.toolsHero{border-radius:20px;padding:16px;margin-bottom:12px;color:#fff;box-shadow:var(--shadow)}
+#mtpTools .toolsHero{background:linear-gradient(135deg,#4c1d95,#7c3aed 55%,#2563eb)}
+#mnrTools .toolsHero{background:linear-gradient(135deg,#065f46,#059669 55%,#0f766e)}
+.toolsHero h2{margin:0;font-size:18px}.toolsHero p{margin:4px 0 0;font-size:11px;line-height:1.45;color:rgba(255,255,255,.84)}
+.toolsStats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.toolsStat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px;box-shadow:var(--shadow)}
+.toolsStat strong{display:block;font-size:22px;line-height:1.1}.toolsStat span{display:block;margin-top:3px;font-size:9px;font-weight:900;color:#64748b;letter-spacing:.35px}
+#mtpTools .toolsStat strong{color:#6d28d9}#mnrTools .toolsStat strong{color:#047857}
+.toolCard{position:relative;overflow:hidden;padding:0}.toolCard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:#7c3aed}
+#mnrTools .toolCard::before{background:#059669}
+.toolTop{padding:13px 13px 11px;display:flex;align-items:flex-start;gap:10px}.toolMain{min-width:0;flex:1}.toolType{font-size:8.5px;font-weight:1000;letter-spacing:.45px;color:#7c3aed;margin-bottom:4px}
+#mnrTools .toolType{color:#047857}.toolName{font-size:14px;font-weight:1000;line-height:1.25;overflow-wrap:anywhere}
+.toolQty{min-width:66px;text-align:center;border-radius:14px;padding:9px 8px;background:#f5f3ff;color:#5b21b6;border:1px solid #ddd6fe}
+#mnrTools .toolQty{background:#ecfdf5;color:#047857;border-color:#a7f3d0}.toolQty strong{display:block;font-size:19px;line-height:1}.toolQty span{display:block;font-size:8px;font-weight:1000;margin-top:3px}
+.toolBody{border-top:1px solid #eef2f7;padding:11px 13px 13px;background:#fbfdff}.toolGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toolDetail{background:#fff;border:1px solid #e5e7eb;border-radius:11px;padding:9px;font-size:10.5px;font-weight:800;overflow-wrap:anywhere}.toolDetail span{display:block;font-size:8px;color:#94a3b8;font-weight:1000;letter-spacing:.35px;margin-bottom:3px}
+.toolRemark{margin-top:8px;background:#fffbeb;border:1px solid #fde68a;border-radius:11px;padding:9px;font-size:10.5px;font-weight:800;overflow-wrap:anywhere}.toolRemark span{display:block;font-size:8px;color:#b45309;font-weight:1000;letter-spacing:.35px;margin-bottom:3px}
+
 </style>
+
+<style id="presentation-upgrade">
+:root{
+  --bg:#f4f7fb;
+  --panel:#ffffff;
+  --panel-soft:#f8fafc;
+  --text:#0f172a;
+  --muted:#64748b;
+  --line:#e2e8f0;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+  --shadow-soft:0 4px 16px rgba(15,23,42,.06);
+  --radius-xl:22px;
+  --radius-lg:16px;
+  --radius-md:12px;
+}
+*{box-sizing:border-box}
+body{
+  background:linear-gradient(180deg,#eef4ff 0,#f8fbff 220px,#f4f7fb 100%);
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.01em;
+}
+.app,.container,.page,.content{max-width:1440px;margin:0 auto}
+header,.topbar,.appHeader{
+  backdrop-filter:saturate(140%) blur(10px);
+  background:rgba(255,255,255,.9)!important;
+  border-bottom:1px solid rgba(226,232,240,.9)!important;
+  box-shadow:0 4px 18px rgba(15,23,42,.04);
+}
+.sidebar,.sideNav,.navPanel{
+  background:linear-gradient(180deg,#0f172a 0%,#111827 100%)!important;
+  border-right:1px solid rgba(255,255,255,.05)!important;
+  box-shadow:8px 0 28px rgba(15,23,42,.08);
+}
+.sidebar a,.sideNav a,.navPanel a,.sidebar button,.sideNav button{
+  border-radius:12px!important;
+  transition:.2s ease;
+}
+.sidebar a:hover,.sideNav a:hover,.navPanel a:hover,
+.sidebar button:hover,.sideNav button:hover{
+  transform:translateX(2px);
+  background:rgba(255,255,255,.08)!important;
+}
+.sidebar .active,.sideNav .active,.navPanel .active{
+  background:linear-gradient(90deg,#2563eb,#7c3aed)!important;
+  color:white!important;
+  box-shadow:0 8px 20px rgba(37,99,235,.24);
+}
+h1,h2,h3,.pageTitle,.sectionTitle{
+  color:#0f172a;
+  letter-spacing:.02em;
+}
+h1,.pageTitle{
+  font-weight:800!important;
+  font-size:clamp(1.6rem,2.5vw,2.3rem)!important;
+}
+h2,.sectionTitle{font-weight:800!important}
+small,.muted,.subtext,.subtitle{color:var(--muted)!important}
+.card,.panel,.statCard,.toolCard{
+  background:rgba(255,255,255,.96)!important;
+  border:1px solid var(--line)!important;
+  border-radius:var(--radius-lg)!important;
+  box-shadow:var(--shadow-soft)!important;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+}
+.card:hover,.toolCard:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow)!important;
+  border-color:#cbd5e1!important;
+}
+.toolCard{
+  overflow:hidden;
+  position:relative;
+}
+.toolCard:before{
+  content:"";
+  display:block;
+  height:4px;
+  background:linear-gradient(90deg,#2563eb,#7c3aed,#14b8a6);
+}
+.toolTop{
+  gap:14px!important;
+  padding:18px 18px 14px!important;
+  align-items:flex-start!important;
+}
+.toolMain{min-width:0}
+.toolType{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#4338ca;
+  font-size:.72rem!important;
+  font-weight:800!important;
+  letter-spacing:.06em;
+  margin-bottom:8px;
+}
+.toolName{
+  font-size:1.05rem!important;
+  line-height:1.35!important;
+  font-weight:800!important;
+  color:#0f172a!important;
+}
+.toolQty{
+  min-width:84px;
+  padding:10px 12px!important;
+  border-radius:14px!important;
+  background:linear-gradient(135deg,#0f172a,#334155)!important;
+  color:#fff!important;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(15,23,42,.15);
+}
+.toolQty strong{
+  display:block;
+  font-size:1.45rem!important;
+  line-height:1!important;
+  font-weight:900!important;
+}
+.toolQty span{
+  display:block;
+  margin-top:5px;
+  font-size:.7rem!important;
+  opacity:.8;
+  letter-spacing:.08em;
+}
+.toolBody{padding:0 18px 18px!important}
+.toolGrid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+.toolDetail{
+  background:var(--panel-soft)!important;
+  border:1px solid #eef2f7!important;
+  border-radius:12px!important;
+  padding:11px 12px!important;
+  min-height:62px;
+  font-weight:700;
+}
+.toolDetail span{
+  display:block!important;
+  color:#64748b!important;
+  font-size:.67rem!important;
+  letter-spacing:.08em!important;
+  font-weight:800!important;
+  margin-bottom:5px!important;
+}
+input,select,.input,.select{
+  background:#fff!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:12px!important;
+  min-height:44px;
+  padding:10px 12px!important;
+  color:#0f172a!important;
+  box-shadow:0 1px 2px rgba(15,23,42,.03);
+}
+input:focus,select:focus,.input:focus,.select:focus{
+  outline:none!important;
+  border-color:#6366f1!important;
+  box-shadow:0 0 0 4px rgba(99,102,241,.12)!important;
+}
+button,.btn{
+  border-radius:12px!important;
+  font-weight:800!important;
+  letter-spacing:.03em;
+  transition:.18s ease;
+}
+button:hover,.btn:hover{transform:translateY(-1px)}
+.table,.dataTable,table{
+  border-collapse:separate!important;
+  border-spacing:0!important;
+  overflow:hidden;
+  border-radius:14px!important;
+  box-shadow:var(--shadow-soft);
+}
+thead th{
+  background:#0f172a!important;
+  color:#fff!important;
+  font-size:.72rem!important;
+  letter-spacing:.07em;
+}
+tbody tr:nth-child(even){background:#f8fafc}
+tbody tr:hover{background:#eef4ff}
+.badge,.pill,.status{
+  border-radius:999px!important;
+  font-weight:800!important;
+  letter-spacing:.04em;
+}
+hr{border-color:#e2e8f0!important}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px}
+::-webkit-scrollbar-track{background:transparent}
+@media(max-width:900px){
+  .toolGrid{grid-template-columns:1fr!important}
+  .toolTop{padding:15px!important}
+  .toolBody{padding:0 15px 15px!important}
+  .toolQty{min-width:74px}
+}
+@media(max-width:640px){
+  body{background:#f8fafc}
+  .card,.panel,.toolCard{border-radius:14px!important}
+  .toolTop{gap:10px!important}
+  .toolName{font-size:.98rem!important}
+  .toolQty strong{font-size:1.25rem!important}
+  input,select,.input,.select{width:100%!important}
+}
+</style>
+
 </head>
 <body>
+<div id="presentationBanner" style="
+  margin:12px auto 0;
+  max-width:1440px;
+  padding:0 18px;
+">
+  <div style="
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    background:linear-gradient(135deg,#0f172a,#1e3a8a 55%,#5b21b6);
+    color:#fff;
+    border-radius:18px;
+    padding:16px 18px;
+    box-shadow:0 14px 34px rgba(30,64,175,.16);
+  ">
+    <div>
+      <div style="font-size:.72rem;font-weight:800;letter-spacing:.12em;opacity:.75;">EASTERN1961 PHILS INC</div>
+      <div style="font-size:1.05rem;font-weight:900;letter-spacing:.03em;margin-top:3px;">WAREHOUSE & EQUIPMENT INVENTORY SYSTEM</div>
+    </div>
+    <div style="
+      white-space:nowrap;
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      padding:7px 10px;
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+    ">MANAGEMENT VIEW</div>
+  </div>
+</div>
+
 <aside class="side">
   <div class="brand"><div class="brandMark">EW</div></div>
   <nav class="nav">
@@ -80,28 +380,44 @@ button,input,select{font:inherit}button{cursor:pointer}
 
 <section id="warehouse" class="page">
   <div class="wrap">
-    <div class="sectionHead"><div><h2>MTP Warehouse / MTP Equipment Parts</h2><p>Equipment parts and consumables in one read-only section</p></div></div>
+    <div class="warehouseHead"><h2>MTP Warehouse</h2><p>Quick-view inventory for Equipment Parts and Consumables</p></div>
     <div class="seg"><button id="partsTab" class="active">Equipment Parts</button><button id="consTab">Consumables</button></div>
 
     <div id="partsPanel">
       <div class="controls">
-        <input id="partsSearch" class="search" placeholder="Search part, equipment no., PR no., supplier, remarks...">
+        <input id="partsSearch" class="search" placeholder="Search item, part number, equipment or remarks...">
         <div class="filter2"><select id="partsStatus" class="select"><option value="">All Status</option></select><select id="partsEquip" class="select"><option value="">All Equipment</option></select></div>
       </div>
-      <div class="sectionHead"><div><h2>Equipment Parts</h2><p>All part records with full details</p></div><span class="countPill" id="partsCount">0</span></div>
+      <div class="sectionHead"><div><h2>Equipment Parts</h2><p>Item, stock and equipment details at a glance</p></div><span class="countPill" id="partsCount">0</span></div>
       <div class="list" id="partsList"></div>
     </div>
 
     <div id="consPanel" style="display:none">
-      <div class="controls"><input id="consSearch" class="search" placeholder="Search consumable, part no., category, reference, remarks..."></div>
-      <div class="sectionHead"><div><h2>Consumables</h2><p>Current inventory summary from transaction history</p></div><span class="countPill" id="consCount">0</span></div>
+      <div class="controls"><input id="consSearch" class="search" placeholder="Search item, part number, equipment or remarks..."></div>
+      <div class="sectionHead"><div><h2>Consumables</h2><p>Current quantity and item details at a glance</p></div><span class="countPill" id="consCount">0</span></div>
       <div class="list" id="consList"></div>
     </div>
   </div>
 </section>
 
-<section id="mtpTools" class="page"><div class="wrap"><div class="sectionHead"><div><h2>MTP Tools and Equipment</h2><p>Reserved section for future tools records</p></div></div><div class="empty"><div class="big">⚒</div><h3>No records yet</h3><p>Wala pang database source para sa MTP Tools and Equipment. Viewer section is ready for future connection.</p><span class="readOnly">View Only</span></div></div></section>
-<section id="mnrTools" class="page"><div class="wrap"><div class="sectionHead"><div><h2>MNR Tools and Equipment</h2><p>Reserved section for future MNR tools records</p></div></div><div class="empty"><div class="big">🛠</div><h3>No records yet</h3><p>Wala pang database source para sa MNR Tools and Equipment. Viewer section is ready for future connection.</p><span class="readOnly">View Only</span></div></div></section>
+<section id="mtpTools" class="page">
+  <div class="wrap">
+    <div class="toolsHero"><h2>MTP TOOLS & EQUIPMENT</h2><p>TOOLS INVENTORY BY CUSTODIAN / HOLDER FROM SMALL TOOLS MONITORING.</p></div>
+    <div class="toolsStats"><div class="toolsStat"><strong id="mtpToolsCountTop">0</strong><span>RECORDS</span></div><div class="toolsStat"><strong id="mtpToolsQtyTop">0</strong><span>TOTAL QTY</span></div></div>
+    <div class="controls"><input id="mtpToolsSearch" class="search" placeholder="SEARCH TOOL, HOLDER, DESCRIPTION OR REMARKS..."><select id="mtpOwner" class="select"><option value="">ALL HOLDERS</option></select></div>
+    <div class="sectionHead"><div><h2>TOOLS LIST</h2><p>READ-ONLY INVENTORY DETAILS</p></div><span class="countPill" id="mtpToolsCount">0</span></div>
+    <div class="list" id="mtpToolsList"></div>
+  </div>
+</section>
+<section id="mnrTools" class="page">
+  <div class="wrap">
+    <div class="toolsHero"><h2>MNR TOOLS & EQUIPMENT</h2><p>TOOLS AND SMALL EQUIPMENT BY LOCATION FROM SMALL TOOLS MONITORING.</p></div>
+    <div class="toolsStats"><div class="toolsStat"><strong id="mnrToolsCountTop">0</strong><span>RECORDS</span></div><div class="toolsStat"><strong id="mnrToolsQtyTop">0</strong><span>TOTAL QTY</span></div></div>
+    <div class="controls"><input id="mnrToolsSearch" class="search" placeholder="SEARCH TOOL OR LOCATION..."><select id="mnrLocation" class="select"><option value="">ALL LOCATIONS</option></select><select id="mnrArea" class="select"><option value="">ALL AREAS</option></select></div>
+    <div class="sectionHead"><div><h2>TOOLS LIST</h2><p>USED, WAREHOUSE STOCK AND QUANTITY</p></div><span class="countPill" id="mnrToolsCount">0</span></div>
+    <div class="list" id="mnrToolsList"></div>
+  </div>
+</section>
 </main>
 <div class="photoModal" id="photoModal"><button id="photoClose" aria-label="Close">×</button><img id="photoModalImg" alt="Equipment photo"></div>
 
@@ -120,7 +436,7 @@ const firebaseConfig={
   measurementId:"G-FWKGTVK2C5"
 };
 const app=initializeApp(firebaseConfig), db=getDatabase(app);
-let parts=[],warehouseParts=[],equipment=[],consumables=[];
+let parts=[],warehouseParts=[],equipment=[],consumables=[],mtpTools=[],mnrTools=[];
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
 const clean=v=>String(v??"").trim();
@@ -142,8 +458,8 @@ const pageInfo={
  equipmentStatus:["Equipment Status","Read-only equipment details"],
  equipmentPending:["Pending Parts","Pending parts for selected equipment"],
  warehouse:["MTP Warehouse","Equipment parts and consumables"],
- mtpTools:["MTP Tools & Equipment","Read-only placeholder"],
- mnrTools:["MNR Tools & Equipment","Read-only placeholder"]
+ mtpTools:["MTP Tools & Equipment","Tools inventory by custodian / holder"],
+ mnrTools:["MNR Tools & Equipment","Tools and small equipment by location"]
 };
 function showPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));document.querySelectorAll(".navBtn").forEach(b=>b.classList.toggle("active",b.dataset.page===id||((id==="equipmentStatus"||id==="equipmentPending")&&b.dataset.page==="dashboard")));$("pageTitle").textContent=pageInfo[id][0];$("pageSub").textContent=pageInfo[id][1];window.scrollTo({top:0,behavior:"smooth"});render()}
 document.querySelectorAll(".navBtn").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
@@ -155,16 +471,16 @@ function partCard(r){
   return `<article class="card"><div class="row"><span class="pill">${esc(r.equipNo||"No Equip No.")}</span>${badge(st)}</div><div class="title">${esc(r.partName||"Untitled Part")}</div><div class="sub">${esc(eqName)} · ${esc(loc)}</div><div class="meta"><div><span>Part Number</span>${esc(r.partNumber||"-")}</div><div><span>PR Number</span>${esc(r.prNo||"-")}</div><div><span>PR Date</span>${esc(r.prDate||"-")}</div><div><span>Supplier</span>${esc(r.supplier||"-")}</div><div><span>Quantity</span>${esc(r.qty||"-")} ${esc(r.unit||"")}</div><div><span>Received Date</span>${esc(r.receivedDate||"-")}</div><div><span>Installed Date</span>${esc(r.installedDate||"-")}</div><div><span>Updated</span>${esc(r.updatedAt||r.createdAt||"-")}</div></div><div class="remarks"><b>Remarks</b>${esc(r.remarks||"No remarks")}</div></article>`
 }
 function warehousePartCard(r){
-  return `<article class="card">
-    <div class="title" style="margin-top:0">${esc(r.itemName||"")}</div>
-    <div class="meta">
-      <div><span>Material / Item Name</span>${esc(r.itemName||"")}</div>
-      <div><span>Part Number</span>${esc(r.partNumber||"")}</div>
-      <div><span>Quantity</span>${esc(r.quantity??"")}</div>
-      <div><span>Unit</span>${esc(r.unit||"")}</div>
-      <div><span>Equipment</span>${esc(r.equipment||"")}</div>
-      <div><span>Remarks</span>${esc(r.remarks||"")}</div>
+  const partNo=clean(r.partNumber)||"—", equip=clean(r.equipment)||"—", unit=clean(r.unit)||"UNIT", remarks=clean(r.remarks);
+  return `<article class="card warehouseCard equipPartCard">
+    <div class="warehouseCardTop">
+      <div class="warehouseCardMain"><div class="warehouseType">Equipment Part</div><div class="warehouseItemName">${esc(r.itemName||"Unnamed Item")}</div></div>
+      <div class="stockBox"><strong>${esc(r.quantity??"—")}</strong><span>${esc(unit)}</span></div>
     </div>
+    <div class="warehouseDetails"><div class="warehouseDetailGrid">
+      <div class="warehouseDetail"><span>Equipment</span>${esc(equip)}</div>
+      <div class="warehouseDetail"><span>Part Number</span>${esc(partNo)}</div>
+    </div><div class="warehouseRemarks ${remarks?"":"emptyRemark"}"><span>Remarks</span>${esc(remarks||"No remarks")}</div></div>
   </article>`
 }
 function equipmentCard(r){
@@ -184,18 +500,33 @@ function buildConsumableSummary(){
   return consumables.slice().sort((a,b)=>clean(a.itemName).localeCompare(clean(b.itemName)));
 }
 function consumableCard(r){
-  return `<article class="card">
-    <div class="title" style="margin-top:0">${esc(r.itemName||"")}</div>
-    <div class="meta">
-      <div><span>Item Name</span>${esc(r.itemName||"")}</div>
-      <div><span>Part Number</span>${esc(r.partNumber||"")}</div>
-      <div><span>Quantity</span>${esc(r.quantity??"")}</div>
-      <div><span>Unit</span>${esc(r.unit||"")}</div>
-      <div><span>Equipment</span>${esc(r.equipment||"")}</div>
-      <div><span>Remarks</span>${esc(r.remarks||"")}</div>
+  const partNo=clean(r.partNumber)||"—", equip=clean(r.equipment)||"—", unit=clean(r.unit)||"UNIT", remarks=clean(r.remarks);
+  return `<article class="card warehouseCard consumableCard">
+    <div class="warehouseCardTop">
+      <div class="warehouseCardMain"><div class="warehouseType">Consumable</div><div class="warehouseItemName">${esc(r.itemName||"Unnamed Item")}</div></div>
+      <div class="stockBox"><strong>${esc(r.quantity??"—")}</strong><span>${esc(unit)}</span></div>
     </div>
+    <div class="warehouseDetails"><div class="warehouseDetailGrid">
+      <div class="warehouseDetail"><span>Equipment</span>${esc(equip)}</div>
+      <div class="warehouseDetail"><span>Part Number</span>${esc(partNo)}</div>
+    </div><div class="warehouseRemarks ${remarks?"":"emptyRemark"}"><span>Remarks</span>${esc(remarks||"No remarks")}</div></div>
   </article>`
 }
+
+
+function numVal(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function normalizeMtpTool(id,v){v=v&&typeof v==="object"?v:{};return {id,...v,owner:clean(v.owner),itemName:clean(v.itemName),toolsDescription:clean(v.toolsDescription),toolsOnHand:clean(v.toolsOnHand),quantity:v.quantity??"",unit:clean(v.unit),remarks:clean(v.remarks)}}
+function normalizeMnrTool(id,v){v=v&&typeof v==="object"?v:{};return {id,...v,itemName:clean(v.itemName),location:clean(v.location),area:clean(v.area),size:clean(v.size),used:v.used??"",stockWarehouse:v.stockWarehouse??"",quantity:v.quantity??"",unit:clean(v.unit)}}
+function mtpToolCard(r){const detail=clean(r.toolsDescription),spec=clean(r.toolsOnHand),remarks=clean(r.remarks),unit=clean(r.unit)||"UNIT";return `<article class="card toolCard"><div class="toolTop"><div class="toolMain"><div class="toolType">${esc(r.owner||"UNASSIGNED")}</div><div class="toolName">${esc(r.itemName||"UNNAMED TOOL")}</div></div><div class="toolQty"><strong>${esc(r.quantity??"—")}</strong><span>${esc(unit)}</span></div></div><div class="toolBody"><div class="toolGrid"><div class="toolDetail"><span>HOLDER / CUSTODIAN</span>${esc(r.owner||"—")}</div><div class="toolDetail"><span>TOOLS DESCRIPTION</span>${esc(detail||"—")}</div><div class="toolDetail"><span>TOOLS ON HAND / SPEC</span>${esc(spec||"—")}</div><div class="toolDetail"><span>UNIT</span>${esc(unit)}</div></div>${remarks?`<div class="toolRemark"><span>REMARKS</span>${esc(remarks)}</div>`:""}</div></article>`}
+function mnrToolCard(r){
+  const unit=clean(r.unit)||"—",qty=clean(r.quantity)!==""?r.quantity:(clean(r.used)!==""?r.used:"—");
+  const isFire=lower(r.itemName)==="fire extinguisher";
+  const extra=isFire
+    ? `<div class="toolDetail"><span>AREA</span>${esc(r.area||"—")}</div><div class="toolDetail"><span>SIZE</span>${esc(r.size||"—")}</div>`
+    : `<div class="toolDetail"><span>USED</span>${esc(clean(r.used)!==""?r.used:"—")}</div><div class="toolDetail"><span>STOCK WAREHOUSE</span>${esc(clean(r.stockWarehouse)!==""?r.stockWarehouse:"—")}</div>`;
+  return `<article class="card toolCard"><div class="toolTop"><div class="toolMain"><div class="toolType">${esc(r.location||"NO LOCATION")}${r.area?` · ${esc(r.area)}`:""}</div><div class="toolName">${esc(r.itemName||"UNNAMED TOOL")}${r.size?` · ${esc(r.size)}`:""}</div></div><div class="toolQty"><strong>${esc(qty)}</strong><span>${esc(unit)}</span></div></div><div class="toolBody"><div class="toolGrid"><div class="toolDetail"><span>LOCATION</span>${esc(r.location||"—")}</div>${extra}<div class="toolDetail"><span>TOTAL QTY</span>${esc(clean(r.quantity)!==""?r.quantity:"—")} ${esc(unit==="—"?"":unit)}</div></div></div></article>`;
+}
+function fillToolsFilters(){const mo=$("mtpOwner"),ml=$("mnrLocation"),ma=$("mnrArea"),curO=mo.value,curL=ml.value,curA=ma.value;const owners=[...new Set(mtpTools.map(r=>clean(r.owner)).filter(Boolean))].sort();const locs=[...new Set(mnrTools.map(r=>clean(r.location)).filter(Boolean))].sort();const areas=[...new Set(mnrTools.filter(r=>!curL||clean(r.location)===curL).map(r=>clean(r.area)).filter(Boolean))].sort();mo.innerHTML='<option value="">ALL HOLDERS</option>'+owners.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("");ml.innerHTML='<option value="">ALL LOCATIONS</option>'+locs.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("");ma.innerHTML='<option value="">ALL AREAS</option>'+areas.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("");if(owners.includes(curO))mo.value=curO;if(locs.includes(curL))ml.value=curL;if(areas.includes(curA))ma.value=curA}
 
 function fillFilters(){
   const ps=$("partsStatus"),pe=$("partsEquip"),curE=pe.value;
@@ -229,9 +560,15 @@ function render(){
 
   const cq=lower($("consSearch").value);const cf=consSummary.filter(r=>clean(r.itemName)&&(!cq||[r.itemName,r.partNumber,r.quantity,r.unit,r.equipment,r.remarks].join(" ").toLowerCase().includes(cq)));
   $("consCount").textContent=cf.length;$("consList").innerHTML=cf.length?cf.map(consumableCard).join(""):empty("No consumables found");
+
+  fillToolsFilters();
+  const mtq=lower($("mtpToolsSearch").value),owner=$("mtpOwner").value;const mtf=mtpTools.filter(r=>(!owner||clean(r.owner)===owner)&&(!mtq||[r.owner,r.itemName,r.toolsDescription,r.toolsOnHand,r.quantity,r.unit,r.remarks].join(" ").toLowerCase().includes(mtq))).sort((a,b)=>clean(a.owner).localeCompare(clean(b.owner))||clean(a.itemName).localeCompare(clean(b.itemName)));
+  $("mtpToolsCount").textContent=mtf.length;$("mtpToolsCountTop").textContent=mtpTools.length;$("mtpToolsQtyTop").textContent=mtpTools.reduce((s,r)=>s+numVal(r.quantity),0);$("mtpToolsList").innerHTML=mtf.length?mtf.map(mtpToolCard).join(""):empty("NO MTP TOOLS FOUND");
+  const mnq=lower($("mnrToolsSearch").value),loc=$("mnrLocation").value,area=$("mnrArea").value;const mnf=mnrTools.filter(r=>(!loc||clean(r.location)===loc)&&(!area||clean(r.area)===area)&&(!mnq||[r.itemName,r.location,r.area,r.size,r.used,r.stockWarehouse,r.quantity,r.unit].join(" ").toLowerCase().includes(mnq))).sort((a,b)=>clean(a.location).localeCompare(clean(b.location))||clean(a.itemName).localeCompare(clean(b.itemName)));
+  $("mnrToolsCount").textContent=mnf.length;$("mnrToolsCountTop").textContent=mnrTools.length;$("mnrToolsQtyTop").textContent=mnrTools.reduce((s,r)=>s+numVal(clean(r.quantity)!==""?r.quantity:r.used),0);$("mnrToolsList").innerHTML=mnf.length?mnf.map(mnrToolCard).join(""):empty("NO MNR TOOLS FOUND");
 }
 
-["equipmentStatusSearch","partsSearch","partsStatus","partsEquip","consSearch"].forEach(id=>$(id).addEventListener("input",render));
+["equipmentStatusSearch","partsSearch","partsStatus","partsEquip","consSearch","mtpToolsSearch","mtpOwner","mnrToolsSearch","mnrLocation","mnrArea"].forEach(id=>$(id).addEventListener("input",render));
 document.addEventListener("click",e=>{
   const btn=e.target.closest("[data-pending-equip]");
   if(btn){selectedPendingEquip=btn.dataset.pendingEquip||"";const r=equipment.find(x=>lower(x.equipNo)===lower(selectedPendingEquip));$("pendingEquipTitle").textContent="Pending Parts — "+(selectedPendingEquip||"Equipment");$("pendingEquipSub").textContent=r?(clean(r.equipment)+" · "+clean(r.location)):"Pending parts for selected equipment";showPage("equipmentPending");return}
@@ -262,6 +599,8 @@ function normalizeWarehouseRow(id,v){
 onValue(ref(db,"equipmentPartsWarehouse"),s=>{warehouseParts=Object.entries(s.val()||{}).map(([id,v])=>normalizeWarehouseRow(id,v));setConn(true);render()},()=>setConn(false));
 onValue(ref(db,"equipmentMasterRecords"),s=>{equipment=Object.entries(s.val()||{}).map(([id,v])=>({id,...v}));setConn(true);render()},()=>setConn(false));
 onValue(ref(db,"consumables"),s=>{consumables=Object.entries(s.val()||{}).map(([id,v])=>normalizeWarehouseRow(id,v));setConn(true);render()},()=>setConn(false));
+onValue(ref(db,"mtpToolsEquipment"),s=>{mtpTools=Object.entries(s.val()||{}).map(([id,v])=>normalizeMtpTool(id,v));setConn(true);render()},()=>setConn(false));
+onValue(ref(db,"mnrToolsEquipment"),s=>{mnrTools=Object.entries(s.val()||{}).map(([id,v])=>normalizeMnrTool(id,v));setConn(true);render()},()=>setConn(false));
 render();
 </script>
 </body>
